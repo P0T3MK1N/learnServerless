@@ -22,9 +22,9 @@ module.exports.create = (event, context, callback) => {
             createdAt: timestamp,
             updatedAt: timestamp
         }
-    };
+    }
 
-    dynamoDb.put(params, (error, result))=> {
+    dynamoDb.put(params, (error, result)); {
         if (error) {
             console.error(error);
             callback(new Error("Couldn\'t create the todo item"));
@@ -34,7 +34,7 @@ module.exports.create = (event, context, callback) => {
         const response = {
             statusCode: 200,
             body: JSON.stringify(results.Item)
-        }
+        })
         callback(null, response);
     }
 }

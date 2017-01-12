@@ -31,7 +31,7 @@
             [
               "serverless-rest-api",
               "dev",
-              "us-east-1",
+              "eu-west-1",
               "lambdaRole"
             ]
           ]
@@ -63,14 +63,14 @@
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream"
               ],
-              "Resource": "arn:aws:logs:us-east-1:*:*"
+              "Resource": "arn:aws:logs:eu-west-1:*:*"
             },
             {
               "Effect": "Allow",
               "Action": [
                 "logs:PutLogEvents"
               ],
-              "Resource": "arn:aws:logs:us-east-1:*:*"
+              "Resource": "arn:aws:logs:eu-west-1:*:*"
             }
           ]
         },
@@ -88,7 +88,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/serverless-rest-api/dev/1484241167166-2017-01-12T17:12:47.166Z/serverless-rest-api.zip"
+          "S3Key": "serverless/serverless-rest-api/dev/1484243004867-2017-01-12T17:43:24.867Z/serverless-rest-api.zip"
         },
         "FunctionName": "serverless-rest-api-dev-create",
         "Handler": "todos/create.create",
@@ -107,14 +107,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateLambdaVersionlMdc7FxpI6urfApKHj95xbrygfJti6GNPqBeaBbqATI": {
+    "CreateLambdaVersion0JB6mvsywSaqJqA2POQU6Fa0PPEK68dpgkVe88c": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateLambdaFunction"
         },
-        "CodeSha256": "lMdc7FxpI6urfApKHj95xbrygfJti6GNPqBeaBbqATI="
+        "CodeSha256": "0JB6m/vsywSaqJqA2P/OQU6Fa0PPEK68dpg/kVe+88c="
       }
     },
     "ApiGatewayRestApi": {
@@ -220,7 +220,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1484241167186": {
+    "ApiGatewayDeployment1484243004887": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -284,7 +284,7 @@
     "CreateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateLambdaVersionlMdc7FxpI6urfApKHj95xbrygfJti6GNPqBeaBbqATI"
+        "Ref": "CreateLambdaVersion0JB6mvsywSaqJqA2POQU6Fa0PPEK68dpgkVe88c"
       }
     },
     "ServiceEndpoint": {
@@ -297,7 +297,7 @@
             {
               "Ref": "ApiGatewayRestApi"
             },
-            ".execute-api.us-east-1.amazonaws.com/dev"
+            ".execute-api.eu-west-1.amazonaws.com/dev"
           ]
         ]
       }
