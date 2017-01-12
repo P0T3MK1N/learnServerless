@@ -1,0 +1,39 @@
+SETUP
+npm install -g serverless
+serverless
+serverles -help
+serverless -version
+
+CREDENTIALS
+Access key ID
+AKIAJWAENBEPDDJDA3FA
+Secret access key
+Yu/lzAiJM9ze09vEWjCGnWZv+D0jypfPQYGpPxD3
+
+serverless config credentials --help
+serverless config credentials --provider aws --key AKIAJWAENBEPDDJDA3FA --secret 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
+cat ~/ .aws/credentials
+
+CREATE SERVICE
+serverless create --template aws-nodejs --path myService
+
+CREATE LAMBDA FUNCTION
+serverless create --template aws-nodejs --path first-example
+serverless create --help
+serverless create --template aws-nodejs --path first-example --name first-example
+cd first-example
+serverless invoke local --help
+dir
+serverless invoke local --function hello
+
+DEPLOY LAMBDA FUNCTION
+cd directory
+serverless deploy
+serverless invoke --function hello --log
+
+REST API AND DYNAMODB
+serverless create --template aws-nodejs --name serverless-rest-api path serverless-rest-api
+cd directory
+create package.json file
+in package.json {"name": "serverless-rest-api"}
+npm install --save aws-sdk uuid
