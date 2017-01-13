@@ -1,6 +1,6 @@
 "use strict";
 
-const uuid = ('uuid');
+const uuid = require('uuid');
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -24,7 +24,7 @@ module.exports.create = (event, context, callback) => {
             updatedAt: timestamp
         }
     }
-    dynamoDb.put.(params, (error, result)) => {
+    dynamoDb.put.(params, (error, result) => {
         if(error) {
             consol.error(error);
             callback(new Error("Could not create the todo item."));
@@ -35,5 +35,5 @@ module.exports.create = (event, context, callback) => {
             body: JSON.stringify(results.Item)
         }
         callback(null,response);
-    }
+    })
 }
