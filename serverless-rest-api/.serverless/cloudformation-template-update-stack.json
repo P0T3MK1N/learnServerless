@@ -88,7 +88,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/serverless-rest-api/dev/1484324783026-2017-01-13T16:26:23.026Z/serverless-rest-api.zip"
+          "S3Key": "serverless/serverless-rest-api/dev/1484467033134-2017-01-15T07:57:13.134Z/serverless-rest-api.zip"
         },
         "FunctionName": "serverless-rest-api-dev-create",
         "Handler": "todos/create.create",
@@ -107,14 +107,50 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateLambdaVersionCpIGBps6so32zFbfpm5wellYg4kNMuSl1Lt6YHFxgY": {
+    "CreateLambdaVersionb1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateLambdaFunction"
         },
-        "CodeSha256": "CpIGBps6so32z+Fbfpm5wellYg4kNMuSl1Lt6YHFxgY="
+        "CodeSha256": "b1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o="
+      }
+    },
+    "ListLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/serverless-rest-api/dev/1484467033134-2017-01-15T07:57:13.134Z/serverless-rest-api.zip"
+        },
+        "FunctionName": "serverless-rest-api-dev-list",
+        "Handler": "todos/list.list",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "ListLambdaVersionb1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ListLambdaFunction"
+        },
+        "CodeSha256": "b1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o="
       }
     },
     "ApiGatewayRestApi": {
@@ -166,7 +202,7 @@
               "ResponseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'",
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'"
               },
               "ResponseTemplates": {
                 "application/json": ""
@@ -220,7 +256,45 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1484324783046": {
+    "ApiGatewayMethodTodosGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceTodos"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ListLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1484467033167": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -229,7 +303,8 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodTodosPost"
+        "ApiGatewayMethodTodosPost",
+        "ApiGatewayMethodTodosGet"
       ]
     },
     "CreateLambdaPermissionApiGateway": {
@@ -238,6 +313,39 @@
         "FunctionName": {
           "Fn::GetAtt": [
             "CreateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ListLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ListLambdaFunction",
             "Arn"
           ]
         },
@@ -284,7 +392,22 @@
     "CreateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateLambdaVersionCpIGBps6so32zFbfpm5wellYg4kNMuSl1Lt6YHFxgY"
+        "Ref": "CreateLambdaVersionb1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o"
+      }
+    },
+    "ListLambdaFunctionArn": {
+      "Description": "Lambda function info",
+      "Value": {
+        "Fn::GetAtt": [
+          "ListLambdaFunction",
+          "Arn"
+        ]
+      }
+    },
+    "ListLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ListLambdaVersionb1dVBdAvcvvDKcWG5axgLpa0yAprlIES0vzSFzYI06o"
       }
     },
     "ServiceEndpoint": {

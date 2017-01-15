@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const uuid = require('uuid');
 const AWS = require('aws-sdk');
@@ -23,7 +23,7 @@ module.exports.create = (event, context, callback) => {
             createdAt: timestamp,
             updatedAt: timestamp
         }
-    }
+    };
     dynamoDb.put.(params, (error, result) => {
         if(error) {
             consol.error(error);
@@ -32,8 +32,8 @@ module.exports.create = (event, context, callback) => {
         }
         const response = {
             statusCode: 200,
-            body: JSON.stringify(results.Item)
-        }
+            body: JSON.stringify(result.Item)
+        };
         callback(null,response);
     })
-}
+};
